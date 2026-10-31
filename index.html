@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ägypten & Marokko Quiz 🇪🇬🇲🇦</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ['Fredoka', 'sans-serif'],
+                        body: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            purple: '#6C5CE7',
+                            pink: '#FD79A8',
+                            yellow: '#FDCB6E',
+                            cyan: '#00CEC9',
+                            dark: '#0F172A',
+                            card: '#1E293B'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0B0E14;
+            background-image: 
+                linear-gradient(to bottom, rgba(11, 14, 20, 0.70), rgba(11, 14, 20, 0.88)),
+                url('image_af9691.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.75);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .btn-option {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-option:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px -4px rgba(108, 92, 231, 0.4);
+            border-color: rgba(108, 92, 231, 0.6);
+        }
+        .glow-purple {
+            box-shadow: 0 0 25px -5px rgba(108, 92, 231, 0.4);
+        }
+    </style>
+</head>
+<body class="font-body text-white min-h-screen flex flex-col justify-between overflow-x-hidden select-none">
+
+    <!-- Top Header Navigation -->
+    <header class="w-full max-w-4xl mx-auto p-4 flex justify-between items-center z-10">
+        <div class="flex items-center gap-3 cursor-pointer" onclick="game.showHome()">
+            <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-brand-purple to-brand-pink flex items-center justify-center text-white text-2xl shadow-lg shadow-brand-purple/30">
+                🇪🇬🇲🇦
+            </div>
+            <div>
+                <span class="font-heading text-xl sm:text-2xl font-bold tracking-wide text-white block leading-none">
+                    Ägypten & Marokko
+                </span>
+                <span class="text-[11px] text-brand-cyan font-semibold tracking-wider uppercase">Trivia Quest</span>
+            </div>
+        </div>
+        <div class="flex items-center gap-2">
+            <button id="sound-btn" onclick="game.toggleSound()" class="w-10 h-10 rounded-xl glass-panel hover:bg-slate-700/50 flex items-center justify-center transition text-slate-300 hover:text-white" title="Ton">
+                <i class="fa-solid fa-volume-high text-lg"></i>
+            </button>
+            <button onclick="game.showLeaderboard()" class="px-3 py-2 rounded-xl glass-panel hover:bg-slate-700/50 flex items-center gap-2 transition text-slate-300 hover:text-white font-medium text-sm">
+                <i class="fa-solid fa-trophy text-brand-yellow"></i>
+                <span class="hidden sm:inline">Bestenliste</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="w-full max-w-3xl mx-auto px-4 py-2 flex-grow flex flex-col justify-center">
+
+        <!-- SCREEN 1: CATEGORY SELECTION -->
+        <section id="screen-home" class="space-y-6">
+            <div class="text-center space-y-2">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800/80 border border-slate-700 text-brand-cyan text-xs font-semibold">
+                    <span>🏛️ Geschichte • Kultur • Diplomatik 🕌</span>
+                </div>
+                <h1 class="font-heading text-3xl sm:text-5xl font-bold text-white tracking-tight">
+                    Wähle dein <span class="bg-gradient-to-r from-brand-purple via-brand-pink to-brand-cyan bg-clip-text text-transparent">Quiz-Level</span>
+                </h1>
+                <p class="text-slate-400 text-sm sm:text-base max-w-md mx-auto">Teste dein Wissen über Ägypten und Marokko!</p>
+            </div>
+
+            <!-- Categories Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+                <!-- Easy -->
+                <div onclick="game.startCategory('easy')" class="glass-panel p-5 rounded-2xl cursor-pointer hover:border-emerald-500 hover:bg-slate-800/90 transition-all duration-300 group flex flex-col items-center text-center gap-3 relative overflow-hidden">
+                    <div class="w-14 h-14 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-2xl group-hover:scale-110 transition duration-300 shadow-inner">
+                        <i class="fa-solid fa-compass"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-heading text-xl font-semibold text-white group-hover:text-emerald-400 transition">Leicht (Easy)</h3>
+                        <p class="text-xs text-slate-400 mt-1">4 Fragen: Hauptstädte, Geografie & Sprachen</p>
+                    </div>
+                </div>
+
+                <!-- Medium -->
+                <div onclick="game.startCategory('medium')" class="glass-panel p-5 rounded-2xl cursor-pointer hover:border-brand-yellow hover:bg-slate-800/90 transition-all duration-300 group flex flex-col items-center text-center gap-3 relative overflow-hidden">
+                    <div class="w-14 h-14 rounded-2xl bg-yellow-500/20 text-brand-yellow flex items-center justify-center text-2xl group-hover:scale-110 transition duration-300 shadow-inner">
+                        <i class="fa-solid fa-utensils"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-heading text-xl font-semibold text-white group-hover:text-brand-yellow transition">Mittel (Medium)</h3>
+                        <p class="text-xs text-slate-400 mt-1">4 Fragen: Essen, Kultur & Bildung</p>
+                    </div>
+                </div>
+
+                <!-- Hard -->
+                <div onclick="game.startCategory('hard')" class="glass-panel p-5 rounded-2xl cursor-pointer hover:border-brand-pink hover:bg-slate-800/90 transition-all duration-300 group flex flex-col items-center text-center gap-3 relative overflow-hidden">
+                    <div class="w-14 h-14 rounded-2xl bg-pink-500/20 text-brand-pink flex items-center justify-center text-2xl group-hover:scale-110 transition duration-300 shadow-inner">
+                        <i class="fa-solid fa-handshake"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-heading text-xl font-semibold text-white group-hover:text-brand-pink transition">Schwer (Hard)</h3>
+                        <p class="text-xs text-slate-400 mt-1">4 Fragen: Diplomatik & Wirtschaft</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- All 12 Questions -->
+            <button onclick="game.startCategory('all')" class="w-full py-4 rounded-2xl bg-gradient-to-r from-brand-purple via-indigo-600 to-brand-pink text-white font-heading font-bold text-lg shadow-xl hover:opacity-95 transition flex items-center justify-center gap-2 glow-purple">
+                <span>🇪🇬</span> Alle 12 Fragen spielen <span>🇲🇦</span>
+            </button>
+
+            <!-- Quick Stats -->
+            <div class="glass-panel rounded-2xl p-4 flex justify-around items-center text-center text-xs text-slate-400 border-t border-slate-700/50">
+                <div>
+                    <span class="block text-lg font-bold text-white font-heading" id="total-played-stat">0</span>
+                    Gespielte Spiele
+                </div>
+                <div class="w-px h-8 bg-slate-700"></div>
+                <div>
+                    <span class="block text-lg font-bold text-brand-yellow font-heading" id="top-score-stat">0</span>
+                    Höchstpunktzahl
+                </div>
+            </div>
+        </section>
+
+        <!-- SCREEN 2: GAMEPLAY -->
+        <section id="screen-game" class="hidden space-y-4">
+            <div class="flex items-center justify-between glass-panel p-3 sm:p-4 rounded-2xl">
+                <div class="flex items-center gap-2">
+                    <span class="text-xs text-slate-400 uppercase font-semibold">Frage:</span>
+                    <span id="question-number" class="font-heading font-bold text-lg text-white">1/4</span>
+                </div>
+
+                <div class="flex items-center gap-3 flex-1 max-w-xs mx-4">
+                    <i class="fa-solid fa-clock text-brand-cyan text-sm"></i>
+                    <div class="w-full bg-slate-700/60 rounded-full h-2.5 overflow-hidden p-0.5 border border-slate-600/30">
+                        <div id="timer-bar" class="bg-gradient-to-r from-brand-cyan to-brand-purple h-full rounded-full transition-all duration-1000 w-full"></div>
+                    </div>
+                    <span id="timer-text" class="font-heading font-bold text-sm text-slate-200 min-w-[20px]">20</span>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-star text-brand-yellow text-sm"></i>
+                    <span id="score-text" class="font-heading font-bold text-lg text-brand-yellow">0</span>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center px-1">
+                <div id="streak-container" class="opacity-0 transition-opacity flex items-center gap-1 text-xs font-bold text-brand-yellow bg-yellow-500/10 px-2.5 py-1 rounded-full border border-yellow-500/20">
+                    <i class="fa-solid fa-fire animate-bounce text-brand-yellow"></i>
+                    <span id="streak-text">2x Serie!</span>
+                </div>
+                <div id="multiplier-badge" class="hidden text-xs font-bold text-brand-pink bg-pink-500/10 px-2.5 py-1 rounded-full border border-pink-500/20">
+                    2x Punkte Aktiv!
+                </div>
+            </div>
+
+            <!-- Question Card -->
+            <div class="glass-panel p-6 rounded-3xl space-y-6 relative overflow-hidden border border-slate-700/60 shadow-xl">
+                <p id="question-text" class="font-heading text-base sm:text-xl font-bold text-center text-white leading-relaxed min-h-[60px] flex items-center justify-center">
+                    Frage wird geladen...
+                </p>
+
+                <!-- Powerups -->
+                <div class="flex justify-center gap-3 pt-2">
+                    <button id="powerup-5050" onclick="game.usePowerup('5050')" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-xs font-semibold text-slate-300 hover:text-white transition flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed">
+                        <i class="fa-solid fa-scissors text-brand-purple"></i> 50:50
+                    </button>
+                    <button id="powerup-time" onclick="game.usePowerup('time')" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-xs font-semibold text-slate-300 hover:text-white transition flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed">
+                        <i class="fa-solid fa-hourglass-plus text-brand-cyan"></i> +10s
+                    </button>
+                    <button id="powerup-double" onclick="game.usePowerup('double')" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-xs font-semibold text-slate-300 hover:text-white transition flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed">
+                        <i class="fa-solid fa-bolt text-brand-pink"></i> 2x Score
+                    </button>
+                </div>
+
+                <!-- Answer Choices -->
+                <div id="answers-container" class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                </div>
+            </div>
+        </section>
+
+        <!-- SCREEN 3: RESULTS -->
+        <section id="screen-result" class="hidden space-y-6 text-center">
+            <div class="glass-panel p-8 rounded-3xl space-y-6 max-w-lg mx-auto relative overflow-hidden border border-slate-700/60 shadow-2xl">
+                <div class="inline-block p-4 rounded-full bg-slate-800/80 border border-slate-700 shadow-inner">
+                    <i id="result-icon" class="fa-solid fa-trophy text-5xl text-brand-yellow"></i>
+                </div>
+
+                <div class="space-y-1">
+                    <h2 id="result-title" class="font-heading text-3xl font-bold text-white">Quiz Beendet!</h2>
+                    <p id="result-subtitle" class="text-sm text-slate-400">Toll gemacht! Hier ist deine Auswertung.</p>
+                </div>
+
+                <div class="bg-slate-900/60 rounded-2xl p-4 grid grid-cols-3 gap-2 border border-slate-800 text-center">
+                    <div>
+                        <span class="text-xs text-slate-400 block font-medium">Punkte</span>
+                        <span id="result-score" class="font-heading text-2xl font-bold text-brand-yellow">0</span>
+                    </div>
+                    <div class="border-x border-slate-800">
+                        <span class="text-xs text-slate-400 block font-medium">Genauigkeit</span>
+                        <span id="result-accuracy" class="font-heading text-2xl font-bold text-brand-cyan">0%</span>
+                    </div>
+                    <div>
+                        <span class="text-xs text-slate-400 block font-medium">Beste Serie</span>
+                        <span id="result-streak" class="font-heading text-2xl font-bold text-brand-pink">0</span>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                    <button onclick="game.restartQuiz()" class="flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-brand-purple to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white font-heading font-semibold shadow-lg transition active:scale-95">
+                        <i class="fa-solid fa-rotate-right mr-2"></i> Nochmal Spielen
+                    </button>
+                    <button onclick="game.showHome()" class="py-3 px-5 rounded-xl glass-panel hover:bg-slate-700/60 text-slate-300 hover:text-white font-heading font-semibold transition">
+                        <i class="fa-solid fa-house mr-1"></i> Menü
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCREEN 4: LEADERBOARD -->
+        <section id="screen-leaderboard" class="hidden space-y-6">
+            <div class="flex justify-between items-center">
+                <h2 class="font-heading text-2xl font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-trophy text-brand-yellow"></i> Bestenliste
+                </h2>
+                <button onclick="game.showHome()" class="text-xs text-slate-400 hover:text-white flex items-center gap-1 transition">
+                    <i class="fa-solid fa-arrow-left"></i> Zurück
+                </button>
+            </div>
+
+            <div class="glass-panel rounded-3xl p-4 sm:p-6 space-y-3">
+                <div id="leaderboard-list" class="space-y-2 max-h-[360px] overflow-y-auto pr-1">
+                </div>
+
+                <div class="pt-3 border-t border-slate-700/50 flex justify-between items-center text-xs text-slate-400">
+                    <span>Im Browser gespeichert</span>
+                    <button onclick="game.clearLeaderboard()" class="hover:text-red-400 transition">Daten Löschen</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="w-full max-w-4xl mx-auto p-4 text-center text-xs text-slate-500">
+        Ägypten & Marokko Spezial-Quiz • 🇪🇬🇲🇦
+    </footer>
+
+    <!-- Audio Synthesizer -->
+    <script>
+        class SoundEngine {
+            constructor() {
+                this.ctx = null;
+                this.enabled = true;
+            }
+
+            init() {
+                if (!this.ctx) {
+                    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+            }
+
+            playCorrect() {
+                if (!this.enabled) return;
+                this.init();
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(523.25, now);
+                osc.frequency.exponentialRampToValueAtTime(1046.50, now + 0.3);
+                gain.gain.setValueAtTime(0.15, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start(now);
+                osc.stop(now + 0.4);
+            }
+
+            playWrong() {
+                if (!this.enabled) return;
+                this.init();
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(180, now);
+                osc.frequency.exponentialRampToValueAtTime(110, now + 0.25);
+                gain.gain.setValueAtTime(0.15, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start(now);
+                osc.stop(now + 0.3);
+            }
+
+            playTick() {
+                if (!this.enabled) return;
+                this.init();
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(800, now);
+                gain.gain.setValueAtTime(0.05, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start(now);
+                osc.stop(now + 0.05);
+            }
+
+            playPowerup() {
+                if (!this.enabled) return;
+                this.init();
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(300, now);
+                osc.frequency.exponentialRampToValueAtTime(900, now + 0.25);
+                gain.gain.setValueAtTime(0.1, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start(now);
+                osc.stop(now + 0.3);
+            }
+        }
+
+        const sound = new SoundEngine();
+    </script>
+
+    <!-- Main Game Logic -->
+    <script>
+        const QUESTION_BANK = {
+            easy: [
+                {
+                    q: "Sind Ägypten und Marokko Länder in Afrika?\n(Are Egypt and Morocco countries in Africa?)",
+                    options: [
+                        "Ja (Yes)", 
+                        "Nein, sie sind in Europa (No, they are in Europe)", 
+                        "Nein, sie sind in Asien (No, they are in Asia)", 
+                        "Nur Ägypten ist in Afrika (Only Egypt is in Africa)"
+                    ],
+                    correct: 0
+                },
+                {
+                    q: "Wie heißt die Hauptstadt von Marokko?\n(What is the capital of Morocco?)",
+                    options: [
+                        "Kairo (Cairo)", 
+                        "Rabat (Rabat)", 
+                        "Casablanca (Casablanca)", 
+                        "Marrakesch (Marrakesh)"
+                    ],
+                    correct: 1
+                },
+                {
+                    q: "Welche Sportart ist in beiden Ländern sehr beliebt?\n(Which sport is very popular in both countries?)",
+                    options: [
+                        "Eishockey (Ice hockey)", 
+                        "Rugby (Rugby)", 
+                        "Fußball (Football / Soccer)", 
+                        "Cricket (Cricket)"
+                    ],
+                    correct: 2
+                },
+                {
+                    q: "Welche Sprache spricht man in Ägypten und Marokko?\n(What language is spoken in Egypt and Morocco?)",
+                    options: [
+                        "Spanisch (Spanish)", 
+                        "Arabisch (Arabic)", 
+                        "Deutsch (German)", 
+                        "Japanisch (Japanese)"
+                    ],
+                    correct: 1
+                }
+            ],
+            medium: [
+                {
+                    q: "In welchen Bereichen arbeiten Ägypten und Marokko zusammen?\n(In which fields do Egypt and Morocco cooperate?)",
+                    options: [
+                        "Handel und Kultur (Trade and culture)", 
+                        "Nur Sport (Sports only)", 
+                        "Nur Musik (Music only)", 
+                        "Gar nicht (Not at all)"
+                    ],
+                    correct: 0
+                },
+                {
+                    q: "Nenne ein berühmtes ägyptisches Gericht und ein berühmtes marokkanisches Gericht.\n(Name a famous Egyptian dish and a famous Moroccan dish.)",
+                    options: [
+                        "Koshari und Couscous (Koshari and Couscous)", 
+                        "Pizza und Sushi (Pizza and Sushi)", 
+                        "Paella und Tacos (Paella and Tacos)", 
+                        "Burger und Pasta (Burger and Pasta)"
+                    ],
+                    correct: 0
+                },
+                {
+                    q: "Wie können Ägypten und Marokko voneinander lernen?\n(How can Egypt and Morocco learn from each other?)",
+                    options: [
+                        "Durch Kultur und Bildung (Through culture and education)", 
+                        "Nur durch Sport (Only through sports)", 
+                        "Gar nicht (Not at all)", 
+                        "Nur durch Videospiele (Only through video games)"
+                    ],
+                    correct: 0
+                },
+                {
+                    q: "Welche Gemeinsamkeit haben die Kulturen Ägyptens und Marokkos?\n(What do Egyptian and Moroccan cultures have in common?)",
+                    options: [
+                        "Beide haben asiatische und europäische Einflüsse (Both have Asian and European influences)", 
+                        "Beide haben arabische und afrikanische Einflüsse (Both have Arab and African influences)", 
+                        "Sie haben keine Gemeinsamkeiten (They have no similarities)", 
+                        "Beide sprechen nur Französisch (Both speak only French)"
+                    ],
+                    correct: 1
+                }
+            ],
+            hard: [
+                {
+                    q: "Seit welchem Jahr haben Ägypten und Marokko diplomatische Beziehungen?\n(Since which year have Egypt and Morocco had diplomatic relations?)",
+                    options: [
+                        "1957 (1957)", 
+                        "1980 (1980)", 
+                        "2001 (2001)", 
+                        "1920 (1920)"
+                    ],
+                    correct: 0
+                },
+                {
+                    q: "Wie profitieren Ägypten und Marokko von der Zusammenarbeit im Handel?\n(How do Egypt and Morocco benefit from trade cooperation?)",
+                    options: [
+                        "Sie können Waren austauschen und ihre Wirtschaft stärken (They can exchange goods and strengthen their economies)", 
+                        "Sie schließen alle ihre Häfen (They close all their ports)", 
+                        "Es bringt überhaupt keinen Vorteil (It brings no advantage at all)", 
+                        "Sie tauschen nur Sportausrüstung aus (They only exchange sports equipment)"
+                    ],
+                    correct: 0
+                },
+                {
+                    q: "Warum ist die Zusammenarbeit zwischen Ägypten und Marokko für Afrika wichtig?\n(Why is cooperation between Egypt and Morocco important for Africa?)",
+                    options: [
+                        "Sie hat keine Auswirkungen auf Afrika (It has no impact on Africa)", 
+                        "Sie kann Handel, Entwicklung und Zusammenarbeit in Afrika fördern (It can support trade, development, and cooperation in Africa)", 
+                        "Sie verlangsamt das Wirtschaftswachstum (It slows down economic growth)", 
+                        "Sie betrifft nur den Kontinent Asien (It only affects Asia)"
+                    ],
+                    correct: 1
+                },
+                {
+                    q: "Wie können Ägypten und Marokko ihre Beziehungen in Zukunft verbessern?\n(How can Egypt and Morocco improve their relations in the future?)",
+                    options: [
+                        "Durch mehr Handel, kulturellen Austausch und gemeinsame Projekte (Through more trade, cultural exchange, and joint projects)", 
+                        "Indem sie die Grenzen für den Handel schließen (By closing borders to trade)", 
+                        "Durch das Beenden aller diplomatischen Treffen (By ending all diplomatic meetings)", 
+                        "Nur durch die Organisation von Sportwettbewerben (Only by organizing sports competitions)"
+                    ],
+                    correct: 0
+                }
+            ]
+        };
+
+        class TriviaGame {
+            constructor() {
+                this.currentCategory = null;
+                this.questions = [];
+                this.currentIndex = 0;
+                this.score = 0;
+                this.streak = 0;
+                this.maxStreak = 0;
+                this.correctCount = 0;
+                this.timeLeft = 20;
+                this.timerInterval = null;
+                this.maxTime = 20;
+
+                this.powerups = { '5050': true, 'time': true, 'double': true };
+                this.doublePointsActive = false;
+
+                this.stats = JSON.parse(localStorage.getItem('bq_stats_em_orig')) || {
+                    gamesPlayed: 0,
+                    highScore: 0,
+                    leaderboard: []
+                };
+
+                this.updateHomeStats();
+            }
+
+            showScreen(screenId) {
+                ['screen-home', 'screen-game', 'screen-result', 'screen-leaderboard'].forEach(id => {
+                    document.getElementById(id).classList.add('hidden');
+                });
+                document.getElementById(screenId).classList.remove('hidden');
+            }
+
+            showHome() {
+                this.stopTimer();
+                this.updateHomeStats();
+                this.showScreen('screen-home');
+            }
+
+            toggleSound() {
+                sound.enabled = !sound.enabled;
+                const btn = document.getElementById('sound-btn');
+                btn.innerHTML = sound.enabled 
+                    ? '<i class="fa-solid fa-volume-high text-lg"></i>' 
+                    : '<i class="fa-solid fa-volume-xmark text-lg text-red-400"></i>';
+            }
+
+            updateHomeStats() {
+                document.getElementById('total-played-stat').innerText = this.stats.gamesPlayed;
+                document.getElementById('top-score-stat').innerText = this.stats.highScore;
+            }
+
+            startCategory(catKey) {
+                this.currentCategory = catKey;
+                if (catKey === 'all') {
+                    this.questions = [
+                        ...QUESTION_BANK.easy,
+                        ...QUESTION_BANK.medium,
+                        ...QUESTION_BANK.hard
+                    ];
+                } else {
+                    this.questions = [...QUESTION_BANK[catKey]];
+                }
+
+                this.currentIndex = 0;
+                this.score = 0;
+                this.streak = 0;
+                this.maxStreak = 0;
+                this.correctCount = 0;
+
+                this.powerups = { '5050': true, 'time': true, 'double': true };
+                this.resetPowerupUI();
+
+                this.showScreen('screen-game');
+                this.loadQuestion();
+            }
+
+            resetPowerupUI() {
+                ['5050', 'time', 'double'].forEach(p => {
+                    const btn = document.getElementById(`powerup-${p}`);
+                    btn.disabled = false;
+                    btn.classList.remove('opacity-40', 'cursor-not-allowed');
+                });
+                this.doublePointsActive = false;
+                document.getElementById('multiplier-badge').classList.add('hidden');
+            }
+
+            loadQuestion() {
+                if (this.currentIndex >= this.questions.length) {
+                    this.endGame();
+                    return;
+                }
+
+                const qData = this.questions[this.currentIndex];
+                
+                document.getElementById('question-number').innerText = `${this.currentIndex + 1}/${this.questions.length}`;
+                document.getElementById('score-text').innerText = this.score;
+                document.getElementById('question-text').innerText = qData.q;
+
+                const container = document.getElementById('answers-container');
+                container.innerHTML = '';
+
+                qData.options.forEach((optText, idx) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'btn-option glass-panel p-4 rounded-2xl text-left font-semibold text-slate-200 hover:text-white flex items-center justify-between group text-sm border border-slate-700/60';
+                    btn.dataset.index = idx;
+                    btn.onclick = () => this.handleAnswer(idx);
+
+                    btn.innerHTML = `
+                        <span class="flex items-center gap-3">
+                            <span class="w-7 h-7 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center text-xs font-bold text-slate-400 group-hover:text-brand-purple group-hover:border-brand-purple transition flex-shrink-0">
+                                ${String.fromCharCode(65 + idx)}
+                            </span>
+                            <span>${optText}</span>
+                        </span>
+                        <i class="fa-solid fa-circle-check opacity-0 group-hover:opacity-40 transition text-brand-purple flex-shrink-0 ml-2"></i>
+                    `;
+                    container.appendChild(btn);
+                });
+
+                if (this.doublePointsActive) {
+                    this.doublePointsActive = false;
+                    document.getElementById('multiplier-badge').classList.add('hidden');
+                }
+
+                this.startTimer();
+            }
+
+            startTimer() {
+                this.stopTimer();
+                this.timeLeft = this.maxTime;
+                this.updateTimerUI();
+
+                this.timerInterval = setInterval(() => {
+                    this.timeLeft--;
+                    this.updateTimerUI();
+
+                    if (this.timeLeft <= 3 && this.timeLeft > 0) {
+                        sound.playTick();
+                    }
+
+                    if (this.timeLeft <= 0) {
+                        this.stopTimer();
+                        this.handleAnswer(null);
+                    }
+                }, 1000);
+            }
+
+            stopTimer() {
+                if (this.timerInterval) clearInterval(this.timerInterval);
+            }
+
+            updateTimerUI() {
+                const bar = document.getElementById('timer-bar');
+                const text = document.getElementById('timer-text');
+                
+                text.innerText = this.timeLeft;
+                const percentage = (this.timeLeft / this.maxTime) * 100;
+                bar.style.width = `${percentage}%`;
+
+                if (this.timeLeft <= 4) {
+                    bar.className = "bg-gradient-to-r from-red-500 to-orange-500 h-full rounded-full transition-all duration-1000 w-full animate-pulse";
+                } else {
+                    bar.className = "bg-gradient-to-r from-brand-cyan to-brand-purple h-full rounded-full transition-all duration-1000 w-full";
+                }
+            }
+
+            usePowerup(type) {
+                if (!this.powerups[type]) return;
+
+                this.powerups[type] = false;
+                const btn = document.getElementById(`powerup-${type}`);
+                btn.disabled = true;
+                btn.classList.add('opacity-40', 'cursor-not-allowed');
+
+                sound.playPowerup();
+
+                const qData = this.questions[this.currentIndex];
+
+                if (type === '5050') {
+                    const container = document.getElementById('answers-container');
+                    const buttons = Array.from(container.children);
+                    
+                    let wrongIndices = buttons
+                        .map((_, idx) => idx)
+                        .filter(idx => idx !== qData.correct);
+                    
+                    wrongIndices.sort(() => Math.random() - 0.5);
+                    const toDisable = wrongIndices.slice(0, 2);
+
+                    toDisable.forEach(idx => {
+                        buttons[idx].disabled = true;
+                        buttons[idx].classList.add('opacity-30', 'line-through', 'pointer-events-none');
+                    });
+                } else if (type === 'time') {
+                    this.timeLeft = Math.min(this.timeLeft + 10, 30);
+                    this.updateTimerUI();
+                } else if (type === 'double') {
+                    this.doublePointsActive = true;
+                    document.getElementById('multiplier-badge').classList.remove('hidden');
+                }
+            }
+
+            handleAnswer(selectedIndex) {
+                this.stopTimer();
+                const qData = this.questions[this.currentIndex];
+                const container = document.getElementById('answers-container');
+                const buttons = container.querySelectorAll('button');
+
+                buttons.forEach(btn => btn.disabled = true);
+
+                if (selectedIndex === qData.correct) {
+                    sound.playCorrect();
+                    buttons[selectedIndex].classList.remove('glass-panel');
+                    buttons[selectedIndex].classList.add('bg-emerald-600/90', 'border-emerald-400', 'text-white', 'scale-[1.02]');
+
+                    this.correctCount++;
+                    this.streak++;
+                    if (this.streak > this.maxStreak) this.maxStreak = this.streak;
+
+                    let points = 100 + (this.timeLeft * 10) + (this.streak > 1 ? this.streak * 20 : 0);
+                    if (this.doublePointsActive) points *= 2;
+
+                    this.score += points;
+                    this.updateStreakUI();
+
+                } else {
+                    sound.playWrong();
+                    if (selectedIndex !== null) {
+                        buttons[selectedIndex].classList.remove('glass-panel');
+                        buttons[selectedIndex].classList.add('bg-rose-600/90', 'border-rose-400', 'text-white');
+                    }
+                    
+                    buttons[qData.correct].classList.remove('glass-panel');
+                    buttons[qData.correct].classList.add('bg-emerald-600/90', 'border-emerald-400', 'text-white');
+
+                    this.streak = 0;
+                    this.updateStreakUI();
+                }
+
+                setTimeout(() => {
+                    this.currentIndex++;
+                    this.loadQuestion();
+                }, 1600);
+            }
+
+            updateStreakUI() {
+                const container = document.getElementById('streak-container');
+                const text = document.getElementById('streak-text');
+
+                if (this.streak >= 2) {
+                    text.innerText = `${this.streak}x Serie!`;
+                    container.classList.remove('opacity-0');
+                } else {
+                    container.classList.add('opacity-0');
+                }
+            }
+
+            endGame() {
+                this.stats.gamesPlayed++;
+                if (this.score > this.stats.highScore) {
+                    this.stats.highScore = this.score;
+                }
+
+                const accuracy = Math.round((this.correctCount / this.questions.length) * 100);
+
+                this.stats.leaderboard.push({
+                    score: this.score,
+                    category: this.getCategoryName(this.currentCategory),
+                    date: new Date().toLocaleDateString(),
+                    accuracy: accuracy
+                });
+
+                this.stats.leaderboard.sort((a, b) => b.score - a.score);
+                this.stats.leaderboard = this.stats.leaderboard.slice(0, 10);
+
+                localStorage.setItem('bq_stats_em_orig', JSON.stringify(this.stats));
+
+                document.getElementById('result-score').innerText = this.score;
+                document.getElementById('result-accuracy').innerText = `${accuracy}%`;
+                document.getElementById('result-streak').innerText = `${this.maxStreak}x`;
+
+                const title = document.getElementById('result-title');
+                const subtitle = document.getElementById('result-subtitle');
+                const icon = document.getElementById('result-icon');
+
+                if (accuracy >= 80) {
+                    title.innerText = "Ausgezeichnet! 🏆";
+                    subtitle.innerText = "Perfekt! Du bist ein echter Experte für Ägypten & Marokko!";
+                    icon.className = "fa-solid fa-crown text-5xl text-brand-yellow animate-bounce";
+                    confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+                } else if (accuracy >= 50) {
+                    title.innerText = "Gut gemacht! 👍";
+                    subtitle.innerText = "Solide Leistung im Ägypten & Marokko Quiz!";
+                    icon.className = "fa-solid fa-trophy text-5xl text-brand-cyan";
+                } else {
+                    title.innerText = "Versuche es nochmal! 💡";
+                    subtitle.innerText = "Übung macht den Meister!";
+                    icon.className = "fa-solid fa-brain text-5xl text-brand-pink";
+                }
+
+                this.showScreen('screen-result');
+            }
+
+            restartQuiz() {
+                if (this.currentCategory) {
+                    this.startCategory(this.currentCategory);
+                } else {
+                    this.showHome();
+                }
+            }
+
+            getCategoryName(key) {
+                const map = { easy: 'Leicht', medium: 'Mittel', hard: 'Schwer', all: 'Alle Fragen' };
+                return map[key] || 'Quiz';
+            }
+
+            showLeaderboard() {
+                const container = document.getElementById('leaderboard-list');
+                container.innerHTML = '';
+
+                if (this.stats.leaderboard.length === 0) {
+                    container.innerHTML = `
+                        <div class="text-center py-8 text-slate-400 text-sm">
+                            Noch keine Ergebnisse vorhanden. Spiele eine Runde!
+                        </div>
+                    `;
+                } else {
+                    this.stats.leaderboard.forEach((item, index) => {
+                        const row = document.createElement('div');
+                        row.className = 'flex items-center justify-between p-3 rounded-xl bg-slate-800/60 border border-slate-700/50 text-sm';
+                        
+                        let rankBadge = `<span class="w-6 font-bold text-slate-400">#${index + 1}</span>`;
+                        if (index === 0) rankBadge = `<span class="w-6 text-brand-yellow font-bold"><i class="fa-solid fa-crown"></i></span>`;
+                        else if (index === 1) rankBadge = `<span class="w-6 text-slate-300 font-bold"><i class="fa-solid fa-medal"></i></span>`;
+                        else if (index === 2) rankBadge = `<span class="w-6 text-amber-600 font-bold"><i class="fa-solid fa-award"></i></span>`;
+
+                        row.innerHTML = `
+                            <div class="flex items-center gap-2">
+                                ${rankBadge}
+                                <div>
+                                    <div class="font-semibold text-white">${item.category}</div>
+                                    <div class="text-[10px] text-slate-400">${item.date} • ${item.accuracy}% Genauigkeit</div>
+                                </div>
+                            </div>
+                            <span class="font-heading font-bold text-brand-yellow">${item.score} Pkt</span>
+                        `;
+                        container.appendChild(row);
+                    });
+                }
+
+                this.showScreen('screen-leaderboard');
+            }
+
+            clearLeaderboard() {
+                if (confirm("Möchtest du wirklich alle gespeicherten Punkte zurücksetzen?")) {
+                    this.stats.leaderboard = [];
+                    this.stats.highScore = 0;
+                    this.stats.gamesPlayed = 0;
+                    localStorage.setItem('bq_stats_em_orig', JSON.stringify(this.stats));
+                    this.showLeaderboard();
+                    this.updateHomeStats();
+                }
+            }
+        }
+
+        const game = new TriviaGame();
+    </script>
+</body>
+</html>
